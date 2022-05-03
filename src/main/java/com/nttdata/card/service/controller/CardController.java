@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.nttdata.card.service.entity.Card;
 import com.nttdata.card.service.model.AccountCard;
+import com.nttdata.card.service.model.FinancialOperation;
 import com.nttdata.card.service.sevice.CardService;
 
  
@@ -89,6 +90,16 @@ public class CardController {
 	@PostMapping(value = "/associateAccountCard", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public Mono<ResponseEntity<Map<String, Object>>> associateAccountCard(@RequestBody AccountCard accountCard) {
 		return cardService.associateAccountCard(accountCard).map(_object -> {
+			return ResponseEntity.ok().body(_object);
+		}).onErrorResume(e -> {
+			log.error("Error:" + e.getMessage());
+			return Mono.just(ResponseEntity.badRequest().build());
+		}).defaultIfEmpty(ResponseEntity.noContent().build());
+	}
+	
+	@PostMapping(value = "/financialOperation", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public Mono<ResponseEntity<Map<String, Object>>> financialOperation(@RequestBody FinancialOperation financialOperation) {
+		return cardService.financialOperation(financialOperation).map(_object -> {
 			return ResponseEntity.ok().body(_object);
 		}).onErrorResume(e -> {
 			log.error("Error:" + e.getMessage());

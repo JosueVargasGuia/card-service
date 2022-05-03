@@ -1,5 +1,8 @@
 package com.nttdata.card.service.FeignClient.FallBackImpl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -20,5 +23,15 @@ public class BankAccountFeignClientFallBack implements BankAccountFeignClient{
 	public BankAccounts findById(Long idBankAccount) {
 		log.info("BankAccountFeignClientFallBack -> " + accountService+"/"+idBankAccount);
 		return null;
+	}
+
+
+ 
+	public Map<String, Object> balanceInquiry(BankAccounts bankAccounts) {
+		log.info("BankAccountFeignClientFallBack -> " + accountService+"/balanceInquiry ["+bankAccounts+"]");
+		Map<String, Object> hashMap = new HashMap<String, Object>();
+		hashMap.put("status", "error");
+		return hashMap;
+		 
 	}
 }
