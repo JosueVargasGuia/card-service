@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController; 
+import org.springframework.web.bind.annotation.RestController;
 import com.nttdata.card.service.entity.Card;
+import com.nttdata.card.service.model.AccountCard;
 import com.nttdata.card.service.sevice.CardService;
+
+import lombok.experimental.var;
 import lombok.extern.log4j.Log4j2;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -66,19 +69,30 @@ public class CardController {
 
 	@DeleteMapping(value = "/{idCard}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public Mono<ResponseEntity<Void>> delete(@PathVariable("idCard") Long idCard) {
+		
+		
 		return cardService.findById(idCard).flatMap(card -> {
 			return cardService.delete(card.getIdCard()).then(Mono.just(ResponseEntity.ok().build()));
 		});
 	}
-	@PostMapping(value = "/registerCard", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE )
-	public Mono<ResponseEntity<Map<String, Object>>> registerCard (@RequestBody Card card) {
-		return cardService.registerCard(card).
-				map(_object ->{ 
-					//_object.put("IntanceName", eurekaClient.getApplicationInfoManager().getInfo().getInstanceId());
-				return ResponseEntity.ok().body(_object);})
-				.onErrorResume(e -> {
-					log.error("Error:" + e.getMessage());
-					return Mono.just(ResponseEntity.badRequest().build());
-				}).defaultIfEmpty(ResponseEntity.noContent().build());
+
+	@PostMapping(value = "/registerCard", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public Mono<ResponseEntity<Map<String, Object>>> registerCard(@RequestBody Card card) {
+		return cardService.registerCard(card).map(_object -> {
+			return ResponseEntity.ok().body(_object);
+		}).onErrorResume(e -> {
+			log.error("Error:" + e.getMessage());
+			return Mono.just(ResponseEntity.badRequest().build());
+		}).defaultIfEmpty(ResponseEntity.noContent().build());
+	}
+
+	@PostMapping(value = "/associateAccountCard", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public Mono<ResponseEntity<Map<String, Object>>> associateAccountCard(@RequestBody AccountCard accountCard) {
+		return cardService.associateAccountCard(accountCard).map(_object -> {
+			return ResponseEntity.ok().body(_object);
+		}).onErrorResume(e -> {
+			log.error("Error:" + e.getMessage());
+			return Mono.just(ResponseEntity.badRequest().build());
+		}).defaultIfEmpty(ResponseEntity.noContent().build());
 	}
 }
