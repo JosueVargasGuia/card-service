@@ -18,7 +18,7 @@ import com.nttdata.card.service.entity.Card;
 import com.nttdata.card.service.model.AccountCard;
 import com.nttdata.card.service.sevice.CardService;
 
-import lombok.experimental.var;
+ 
 import lombok.extern.log4j.Log4j2;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
