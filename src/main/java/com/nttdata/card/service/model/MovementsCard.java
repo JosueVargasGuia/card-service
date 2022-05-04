@@ -1,6 +1,9 @@
 package com.nttdata.card.service.model;
 
+ 
 import java.util.Date;
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -19,16 +22,15 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @Data
-//@Document(collection = "movement_credit")
-public class MovementCredit {
+@Document(collection = "movements-card")
+public class MovementsCard {
 	//@Id
-	private Long idMovementCredit;
-	private Long idCreditAccount;
-	private Double amount;
-	private Date dateMovement;
-	private TypeMovementCredit typeMovementCredit;
-	private Double commissionForTransaction;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss") 
+	Long idMovementCard;
+	Long idCard;
+	TypeOperation typeOperation;
+	Double amount;
+	List<MovementCardDetails>movementCardDetails;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
 	private Date creationDate;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
 	private Date dateModified;

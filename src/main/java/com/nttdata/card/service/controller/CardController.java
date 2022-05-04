@@ -73,7 +73,9 @@ public class CardController {
 		
 		
 		return cardService.findById(idCard).flatMap(card -> {
-			return cardService.delete(card.getIdCard()).then(Mono.just(ResponseEntity.ok().build()));
+			return cardService.delete(card.getIdCard())
+					.map(o->ResponseEntity.ok().<Void> build())
+					.defaultIfEmpty(ResponseEntity.ok().build());
 		});
 	}
 

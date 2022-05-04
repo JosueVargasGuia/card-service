@@ -5,5 +5,6 @@ package com.nttdata.card.service.model;
  * thirdPartyPayment:el pago de cualquier producto de crédito de terceros
  */
 public enum TypeOperation {
-	payment, withdrawal, thirdPartyPayment;
+	payment, withdrawal;
+	/*, thirdPartyPayment*/
 }

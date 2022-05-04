@@ -30,6 +30,7 @@ public class AccountCard {
 	private Long sequence;
 	private Boolean isMainAccount;
 	private Double accountBalance;
+	private Double balanceTake;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
 	private Date creationDate;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")

@@ -16,5 +16,6 @@ import lombok.Setter;
 @Builder
 public class AccountPayable { 
 	private TypeAccount typeAccount;//BankAccounts o CreditAccount
-	private Long idAccount;// Identificador de cuenta que toma los id de BankAccounts.idBankAccount o CreditAccount.idCreditAccount	
+	private Long idAccount;// Identificador de cuenta que toma los id de BankAccounts.idBankAccount o CreditAccount.idCreditAccount
+	private String interbankAccountCode;
 }

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import com.nttdata.card.service.FeignClient.MovementAccountFeignClient;
 import com.nttdata.card.service.model.BankAccounts;
+import com.nttdata.card.service.model.MovementAccount;
+
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -21,5 +23,20 @@ public class MovementAccountFeignClientFallBack implements MovementAccountFeignC
 		Map<String, Object> hashMap = new HashMap<String, Object>();
 		hashMap.put("status", "error");
 		return hashMap;
+	}
+
+	 
+	public Map<String, Object> recordAccount(MovementAccount movementAccount) {
+		log.info("MovementAccountFeignClientFallBack -> " + service + "/recordAccount [" + movementAccount + "]");
+		Map<String, Object> hashMap = new HashMap<String, Object>();
+		hashMap.put("status", "error");
+		return hashMap;
+	}
+
+
+	@Override
+	public void delete(Long idBankAccount) {
+		log.info("MovementAccountFeignClientFallBack -> " + service + "/" + idBankAccount );	
+		
 	}
 }
