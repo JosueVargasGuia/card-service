@@ -10,11 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.nttdata.card.service.FeignClient.FallBackImpl.AccountCardFeignClientFallBack;
 import com.nttdata.card.service.model.AccountCard;
 
-@FeignClient(name="${api.account-card-service.uri}",fallback =AccountCardFeignClientFallBack.class )
+@FeignClient(name = "${api.account-card-service.uri}", fallback = AccountCardFeignClientFallBack.class)
 public interface AccountCardFeignClient {
 
 	@PostMapping
 	AccountCard save(AccountCard accountCard);
+
 	@GetMapping("/findByidCard/{idCard}")
-	List<AccountCard> findByIdCredit(@PathVariable(name="idCard")Long idCard);
+	List<AccountCard> findByIdCredit(@PathVariable(name = "idCard") Long idCard);
 }

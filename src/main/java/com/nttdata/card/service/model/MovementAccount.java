@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+ 
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,18 +21,18 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @Data
- 
-public class AccountCard {
- 
-	private Long idAccountCard;
-	private Long idCard;
-	private Long idAccount;
-	private TypeAccount typeAccount;
-	private Long sequence;
-	private Boolean isMainAccount;
-	private Double accountBalance;
-	private Double balanceTake;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
+//@Document(collection = "movements_accounts")
+public class MovementAccount {
+	//@Id
+	private Long idMovementAccount;
+	private Long idBankAccount;
+	private Long idCustomer;
+	private Double amount;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss") 
+	private Date dateMovementAccount;
+	private TypeMovementAccount typeMovementAccount;
+	private Double commissionForTransaction;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss") 
 	private Date creationDate;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
 	private Date dateModified;
