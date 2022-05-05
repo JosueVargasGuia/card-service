@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nttdata.card.service.entity.Card;
 import com.nttdata.card.service.model.AccountCard;
 import com.nttdata.card.service.model.FinancialOperation;
+import com.nttdata.card.service.model.MovementsCard;
 import com.nttdata.card.service.sevice.CardService;
 
  
@@ -108,4 +109,10 @@ public class CardController {
 			return Mono.just(ResponseEntity.badRequest().build());
 		}).defaultIfEmpty(ResponseEntity.noContent().build());
 	}
+	@GetMapping(value="/lastTenReport",produces = MediaType.APPLICATION_JSON_VALUE)
+	public Flux<MovementsCard> lastTenReport(@RequestBody Card card) {
+		return cardService.lastTenReport(card);
+
+	}
+	
 }
