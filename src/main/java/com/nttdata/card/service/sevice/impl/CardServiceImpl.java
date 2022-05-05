@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.nttdata.card.service.FeignClient.AccountCardFeignClient;
@@ -24,6 +25,7 @@ import com.nttdata.card.service.FeignClient.MovementsCardFeignClient;
 import com.nttdata.card.service.FeignClient.SignCustomAccoFeignClient;
 import com.nttdata.card.service.FeignClient.TableIdFeignClient;
 import com.nttdata.card.service.entity.Card;
+import com.nttdata.card.service.entity.CardType;
 import com.nttdata.card.service.model.AccountCard;
 import com.nttdata.card.service.model.AccountTransfers;
 import com.nttdata.card.service.model.BankAccounts;
@@ -35,6 +37,7 @@ import com.nttdata.card.service.model.MovementAccount;
 import com.nttdata.card.service.model.MovementCardDetails;
 import com.nttdata.card.service.model.MovementCredit;
 import com.nttdata.card.service.model.MovementsCard;
+import com.nttdata.card.service.model.MovementsCardReport;
 import com.nttdata.card.service.model.SignatoriesCustomerAccounts;
 import com.nttdata.card.service.model.StatusTransfer;
 import com.nttdata.card.service.model.Transfers;
@@ -121,26 +124,8 @@ public class CardServiceImpl implements CardService {
 	/** Registra una tarjeta */
 	@Override
 	public Mono<Map<String, Object>> registerCard(Card card) {
-		// Cuenta de bancarias o productos pasivos
-		BankAccounts bankAccount = bankAccountFeignClient.findById(card.getIdAccount());
-		// Cuentas de credito o product activos
-		CreditAccount creditAccount = creditAccountFeignClient.findById(card.getIdAccount());
-		// Buscando titular de la cuenta
-		HolderAccount holderAccount = holderAccountFeignClient.findById(card.getIdHolderAccount());
-		// Buscando firma autorisada
-		SignatoriesCustomerAccounts signatoriesCustomerAccounts = signCustomAccoFeignClient
-				.findById(card.getIdSignCustAccount());
 		Map<String, Object> map = new HashMap<>();
-		boolean valid = true;
-		if (bankAccount == null && creditAccount == null) {
-			valid = false;
-			map.put("Account", "La cuenta no existe.");
-		}
-		if (holderAccount == null && signatoriesCustomerAccounts == null) {
-			valid = false;
-			map.put("HolderSignature", "Se requiere una firma autorisada o titular de la cuenta.");
-		}
-		if (valid) {
+		if (card.getCardType() != null) {
 			if (card.getPassword() == null) {
 				card.setPassword(numberRandoms(4, false));
 			}
@@ -155,8 +140,42 @@ public class CardServiceImpl implements CardService {
 				return map;
 			});
 		} else {
-			return Mono.empty();
+			map.put("Card", "Ingrese el tipo de tarjeta[" + CardType.creditCard + "," + CardType.debitCard + "]");
+			return Mono.just(map);
 		}
+		// if (card.getCardType() == CardType.creditCard) {
+		// Cuenta de bancarias o productos pasivos
+		// BankAccounts bankAccount =
+		// bankAccountFeignClient.findById(card.getIdAccount());
+		// Cuentas de credito o product activos
+
+		// Buscando titular de la cuenta
+		// HolderAccount holderAccount =
+		// holderAccountFeignClient.findById(card.getIdHolderAccount());
+		// Buscando firma autorisada
+		// SignatoriesCustomerAccounts signatoriesCustomerAccounts =
+		// signCustomAccoFeignClient
+		// .findById(card.getIdSignCustAccount());
+		// }
+		// CreditAccount creditAccount =
+		// creditAccountFeignClient.findById(card.getIdAccount());
+
+		// boolean valid = true;
+		// if (bankAccount == null && creditAccount == null) {
+		// valid = false;
+		// map.put("Account", "La cuenta no existe.");
+		// }
+		// if (holderAccount == null && signatoriesCustomerAccounts == null) {
+		// valid = false;
+		// map.put("HolderSignature", "Se requiere una firma autorisada o titular de la
+		// cuenta.");
+		// }
+
+		// if (valid) {
+
+		// } else {
+		// return Mono.empty();
+		// }
 
 	}
 
@@ -173,6 +192,10 @@ public class CardServiceImpl implements CardService {
 		return builder.toString();
 	}
 
+	/**
+	 * Los clientes ahora pueden tener tarjetas de débito asociado a sus cuentas
+	 * bancarias
+	 */
 	@Override
 	public Mono<Map<String, Object>> associateAccountCard(AccountCard accountCard) {
 		Map<String, Object> map = new HashMap<>();
@@ -446,7 +469,8 @@ public class CardServiceImpl implements CardService {
 							transfers.setTypeTransfer(TypeTransfer.interbank);
 							transfers.setInterbankAccountCode(
 									financialOperation.getAccountPayable().getInterbankAccountCode());
-							ope.setInterbankAccountCode(financialOperation.getAccountPayable().getInterbankAccountCode());
+							ope.setInterbankAccountCode(
+									financialOperation.getAccountPayable().getInterbankAccountCode());
 							AccountTransfers accountOrigin = new AccountTransfers();
 							accountOrigin.setTypeAccount(ope.getTypeAccount());
 							accountOrigin.setIdAccount(ope.getIdAccount());
@@ -532,6 +556,32 @@ public class CardServiceImpl implements CardService {
 		// log.info(cardRepository.findOne(example).blockOptional().get());
 
 		return Mono.just(result);
+	}
+
+	/**
+	 * • Implementar un reporte con los últimos 10 movimientos de la tarjeta de
+	 * débito y de crédito.
+	 */
+	@Override
+	public Flux<MovementsCard> lastTenReport(Card card) {
+		return Flux.merge(Flux.fromIterable(movementsCardFeignClient.findAll()).map(e -> {
+			e.setCard(this.findById(e.getIdCard()).blockOptional().orElse(new Card()));
+			log.info("Find:" + e.toString());
+			return e;
+		}).filter(obj -> obj.getCard().getCardType() == CardType.creditCard)
+				.sort((o1, o2) -> o2.getIdMovementCard().compareTo(o1.getIdMovementCard())).take(10)
+		// .collectList()
+		// .blockOptional().get().forEach(e-> log.info("creditCard:"+e.toString()))
+				, Flux.fromIterable(movementsCardFeignClient.findAll()).map(e -> {
+					e.setCard(this.findById(e.getIdCard()).blockOptional().orElse(new Card()));
+					log.info("Find:" + e.toString());
+					return e;
+				}).filter(obj -> obj.getCard().getCardType() == CardType.debitCard)
+						.sort((o1, o2) -> o2.getIdMovementCard().compareTo(o1.getIdMovementCard())).take(10)
+		// .collectList()
+		// .blockOptional().get().forEach(e-> log.info("debitCard:"+e.toString()))
+		);
+
 	}
 
 }

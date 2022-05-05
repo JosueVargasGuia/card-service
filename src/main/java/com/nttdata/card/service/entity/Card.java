@@ -25,15 +25,16 @@ import lombok.Setter;
 public class Card {
 	@Id
 	private Long idCard;
-	private Long idHolderAccount;
-	private Long idAccount;
-	private Long idCustomer;
-	private Long idSignCustAccount;
+	//private Long idHolderAccount;
+	//private Long idAccount;
+	//private Long idCustomer;
+	//private Long idSignCustAccount;
 	private String cardNumber;
-	private CardType cardType;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private Date expirationDate;
 	private String cvv;
+	private CardType cardType;
+	
 	private String password;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss") 
 	private Date creationDate;
