@@ -6,12 +6,10 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.nttdata.card.service.FeignClient.AccountCardFeignClient;
@@ -32,13 +30,10 @@ import com.nttdata.card.service.model.BankAccounts;
 import com.nttdata.card.service.model.CreditAccount;
 import com.nttdata.card.service.model.FinancialOperation;
 import com.nttdata.card.service.model.FinancialOperationDetails;
-import com.nttdata.card.service.model.HolderAccount;
 import com.nttdata.card.service.model.MovementAccount;
 import com.nttdata.card.service.model.MovementCardDetails;
 import com.nttdata.card.service.model.MovementCredit;
 import com.nttdata.card.service.model.MovementsCard;
-import com.nttdata.card.service.model.MovementsCardReport;
-import com.nttdata.card.service.model.SignatoriesCustomerAccounts;
 import com.nttdata.card.service.model.StatusTransfer;
 import com.nttdata.card.service.model.Transfers;
 import com.nttdata.card.service.model.TypeAccount;
@@ -583,5 +578,41 @@ public class CardServiceImpl implements CardService {
 		);
 
 	}
+
+	/*
+	 * Metodo para consultar el saldo de la cuenta principal asociada a la tarjeta de débito.
+	 * */
+	
+	@Override
+	public Mono<Map<String, Object>> balanceAccountAssociateCard(Card card) {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		AccountCard accountCard = new AccountCard();
+		accountCard.setIdCard(card.getIdCard());
+		accountCard.setIsMainAccount(true);
+		AccountCard objAccountCard = accountCardFeignClient.findByIdForExample(accountCard);
+		
+		
+		if (objAccountCard.getTypeAccount() == TypeAccount.BankAccounts) {
+			BankAccounts find = new BankAccounts();
+			find.setIdAccount(objAccountCard.getIdAccount());
+			BankAccounts objBankAccountCard = bankAccountFeignClient.findByIdForExample(find);
+			
+			result=movementAccountFeignClient.balanceInquiry(objBankAccountCard);
+		}
+		if (objAccountCard.getTypeAccount() == TypeAccount.CreditAccount) {
+			CreditAccount find = new CreditAccount();
+			find.setIdAccount(objAccountCard.getIdAccount());
+			CreditAccount objCreditAccountCard = creditAccountFeignClient.findByIdForExample(find);
+			
+			result=movementCreditFeignClient.balanceInquiry(objCreditAccountCard);
+		}
+		
+		return Mono.just(result);
+	}
+
+	
+
 
 }
