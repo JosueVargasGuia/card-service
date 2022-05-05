@@ -6,6 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.nttdata.card.service.FeignClient.FallBackImpl.AccountCardFeignClientFallBack;
 import com.nttdata.card.service.model.AccountCard;
@@ -18,4 +19,9 @@ public interface AccountCardFeignClient {
 
 	@GetMapping("/findByidCard/{idCard}")
 	List<AccountCard> findByIdCredit(@PathVariable(name = "idCard") Long idCard);
+
+	@PostMapping("/findByIdForExample")
+	AccountCard findByIdForExample(@RequestBody AccountCard accountCard);
+
+	
 }

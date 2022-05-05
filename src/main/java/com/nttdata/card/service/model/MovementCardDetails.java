@@ -1,7 +1,6 @@
 package com.nttdata.card.service.model;
 
 import java.util.Date;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

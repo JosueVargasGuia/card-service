@@ -4,7 +4,6 @@ package com.nttdata.card.service.model;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -25,7 +24,6 @@ import lombok.Setter;
 @Data
 @Document(collection = "movements-card")
 public class MovementsCard {
-	//@Id
 	Long idMovementCard;
 	Long idCard;
 	TypeOperation typeOperation;

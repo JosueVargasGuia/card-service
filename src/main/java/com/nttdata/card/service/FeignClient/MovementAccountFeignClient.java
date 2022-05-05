@@ -16,6 +16,7 @@ import com.nttdata.card.service.model.MovementAccount;
  , fallback = MovementAccountFeignClientFallBack.class
 )
 public interface MovementAccountFeignClient {
+	
 	@PostMapping(value = "/balanceInquiry")
 	Map<String, Object> balanceInquiry(@RequestBody BankAccounts bankAccounts);
 
