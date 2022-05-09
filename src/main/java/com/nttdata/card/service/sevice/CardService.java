@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.nttdata.card.service.entity.Card;
 import com.nttdata.card.service.model.AccountCard;
+import com.nttdata.card.service.model.BankAccounts;
 import com.nttdata.card.service.model.FinancialOperation;
 import com.nttdata.card.service.model.MovementsCard;
 
@@ -29,7 +30,13 @@ public interface CardService {
 
 	Flux<MovementsCard> lastTenReport(Card card);
 
+
 	AccountCard findByAccoundCardForExample(AccountCard accountCard);
 	
 	Mono<Card>  findByCardForExample(Card card);
+
+	
+	Mono<Map<String, Object>> balanceAccountAssociateCard(Card card);
+	
+
 }

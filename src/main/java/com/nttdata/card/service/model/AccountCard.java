@@ -2,9 +2,6 @@ package com.nttdata.card.service.model;
 
 import java.util.Date;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
@@ -20,7 +17,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @Data
- 
 public class AccountCard {
  
 	private Long idAccountCard;

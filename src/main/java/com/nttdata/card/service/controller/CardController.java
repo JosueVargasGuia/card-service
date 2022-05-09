@@ -115,4 +115,10 @@ public class CardController {
 
 	}
 	
+	@PostMapping("/balanceAccountAssociateCard")
+	public Mono<Map<String, Object>> balanceAccountAssociateCard(@RequestBody Card card) {
+		return cardService.balanceAccountAssociateCard(card);
+		
+	}
+	
 }

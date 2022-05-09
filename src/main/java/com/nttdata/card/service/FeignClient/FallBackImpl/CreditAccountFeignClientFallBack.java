@@ -16,11 +16,18 @@ import reactor.core.publisher.Mono;
 @Log4j2
 @Component
 public class CreditAccountFeignClientFallBack implements CreditAccountFeignClient {
+	
 	@Value("${api.credit-service.uri}")
 	private String accountService;
 
 	public CreditAccount findById(Long idCreditAccount) {
 		log.info("CreditAccountFeignClientFallBack -> " + accountService + "/" + idCreditAccount);
+		return null;
+	}
+
+	@Override
+	public CreditAccount findByIdForExample(CreditAccount find) {
+		log.info("CreditAccountFeignClientFallBack -> "+"/findByIdForExample ["+find.toString()+"]");
 		return null;
 	}
 

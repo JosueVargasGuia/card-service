@@ -19,15 +19,19 @@ public class AccountCardFeignClientFallBack implements AccountCardFeignClient {
 
 	 
 	public AccountCard save(AccountCard accountCard) {
-		log.info("CreditAccountFeignClientFallBack -> " + serviceUri );
+		log.info("AccountCardFeignClientFallBack -> " + serviceUri );
+		return null;
+	}
+	
+	public List<AccountCard> findByIdCredit(Long idCard) {
+		// TODO Auto-generated method stub
+		log.info("AccountCardFeignClientFallBack -> " + serviceUri+"/findByidCard/"+idCard );
 		return null;
 	}
 
-
-	 
-	public List<AccountCard> findByIdCredit(Long idCard) {
-		// TODO Auto-generated method stub
-		log.info("CreditAccountFeignClientFallBack -> " + serviceUri+"/findByidCard/"+idCard );
+	@Override
+	public AccountCard findByIdForExample(AccountCard accountCard) {
+		log.info("AccountCardFeignClientFallBack -> " + serviceUri+"/findByIdForExample/");
 		return null;
 	}
 
