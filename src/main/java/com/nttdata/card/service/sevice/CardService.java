@@ -28,4 +28,8 @@ public interface CardService {
 	Mono<Map<String, Object>> financialOperation(FinancialOperation financialOperation);
 
 	Flux<MovementsCard> lastTenReport(Card card);
+
+	AccountCard findByAccoundCardForExample(AccountCard accountCard);
+	
+	Mono<Card>  findByCardForExample(Card card);
 }

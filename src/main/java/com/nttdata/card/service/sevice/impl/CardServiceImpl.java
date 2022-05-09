@@ -584,4 +584,18 @@ public class CardServiceImpl implements CardService {
 
 	}
 
+	 
+
+	@Override
+	public Mono<Card> findByCardForExample(Card card) {
+		// TODO Auto-generated method stub
+		return this.cardRepository.findOne(Example.of(card));
+	}
+
+	@Override
+	public  AccountCard  findByAccoundCardForExample(AccountCard accountCard) {
+		// TODO Auto-generated method stub
+		return this.accountCardFeignClient.findByAccoundCardForExample(accountCard);
+	}
+
 }
