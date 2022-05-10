@@ -24,8 +24,8 @@ public interface AccountCardFeignClient {
 	List<AccountCard> findByIdCredit(@PathVariable(name = "idCard") Long idCard);
 
 
-	@GetMapping("/findByExample")
-	AccountCard findByAccoundCardForExample(AccountCard accountCard);
+	//@GetMapping("/findByExample")
+	//AccountCard findByAccoundCardForExample(AccountCard accountCard);
 
 	@PostMapping("/findByIdForExample")
 	AccountCard findByIdForExample(@RequestBody AccountCard accountCard);

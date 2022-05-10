@@ -13,7 +13,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import com.nttdata.card.service.entity.CardType;
 @Getter
 @Setter
 @NoArgsConstructor

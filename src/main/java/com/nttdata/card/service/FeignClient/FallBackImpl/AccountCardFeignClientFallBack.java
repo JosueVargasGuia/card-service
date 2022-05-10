@@ -37,11 +37,11 @@ public class AccountCardFeignClientFallBack implements AccountCardFeignClient {
 
 
 
-	@Override
-	public AccountCard  findByAccoundCardForExample(AccountCard accountCard) {
+	//@Override
+	//public AccountCard  findByAccoundCardForExample(AccountCard accountCard) {
 		// TODO Auto-generated method stub
-		log.info("CreditAccountFeignClientFallBack -> " + serviceUri+"/findByExample :"+accountCard.toString()  );
-		return null;
-	}
+		//log.info("CreditAccountFeignClientFallBack -> " + serviceUri+"/findByExample :"+accountCard.toString()  );
+		//return null;
+	//}
 
 }

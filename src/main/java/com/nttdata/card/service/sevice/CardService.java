@@ -31,9 +31,9 @@ public interface CardService {
 	Flux<MovementsCard> lastTenReport(Card card);
 
 
-	AccountCard findByAccoundCardForExample(AccountCard accountCard);
+	 AccountCard findByAccountCardForExample(AccountCard accountCard);
 	
-	Mono<Card>  findByCardForExample(Card card);
+	 Mono<Card>  findByCardForExample(Card card);
 
 	
 	Mono<Map<String, Object>> balanceAccountAssociateCard(Card card);
