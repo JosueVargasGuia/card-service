@@ -580,39 +580,47 @@ public class CardServiceImpl implements CardService {
 	}
 
 	/*
-	 * Metodo para consultar el saldo de la cuenta principal asociada a la tarjeta de débito.
-	 * */
-	
+	 * Metodo para consultar el saldo de la cuenta principal asociada a la tarjeta
+	 * de débito.
+	 */
+
 	@Override
 	public Mono<Map<String, Object>> balanceAccountAssociateCard(Card card) {
-		
+
 		Map<String, Object> result = new HashMap<String, Object>();
-		
+
 		AccountCard accountCard = new AccountCard();
 		accountCard.setIdCard(card.getIdCard());
 		accountCard.setIsMainAccount(true);
 		AccountCard objAccountCard = accountCardFeignClient.findByIdForExample(accountCard);
-		
-		
+
 		if (objAccountCard.getTypeAccount() == TypeAccount.BankAccounts) {
 			BankAccounts find = new BankAccounts();
 			find.setIdAccount(objAccountCard.getIdAccount());
 			BankAccounts objBankAccountCard = bankAccountFeignClient.findByIdForExample(find);
-			
-			result=movementAccountFeignClient.balanceInquiry(objBankAccountCard);
+
+			result = movementAccountFeignClient.balanceInquiry(objBankAccountCard);
 		}
 		if (objAccountCard.getTypeAccount() == TypeAccount.CreditAccount) {
 			CreditAccount find = new CreditAccount();
 			find.setIdAccount(objAccountCard.getIdAccount());
 			CreditAccount objCreditAccountCard = creditAccountFeignClient.findByIdForExample(find);
-			
-			result=movementCreditFeignClient.balanceInquiry(objCreditAccountCard);
+
+			result = movementCreditFeignClient.balanceInquiry(objCreditAccountCard);
 		}
-		
+
 		return Mono.just(result);
 	}
 
-	
+	@Override
+	public AccountCard findByAccountCardForExample(AccountCard accountCard) {
+		// TODO Auto-generated method stub
+		return this.accountCardFeignClient.findByIdForExample(accountCard);
+	}
 
-
+	@Override
+	public Mono<Card> findByCardForExample(Card card) {
+		// TODO Auto-generated method stub
+		return cardRepository.findOne(Example.of(card));
+	}
 }

@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.nttdata.card.service.FeignClient.FallBackImpl.AccountCardFeignClientFallBack;
+import com.nttdata.card.service.entity.Card;
 import com.nttdata.card.service.model.AccountCard;
+
+import reactor.core.publisher.Mono;
 
 @FeignClient(name = "${api.account-card-service.uri}", fallback = AccountCardFeignClientFallBack.class)
 public interface AccountCardFeignClient {
@@ -20,8 +23,13 @@ public interface AccountCardFeignClient {
 	@GetMapping("/findByidCard/{idCard}")
 	List<AccountCard> findByIdCredit(@PathVariable(name = "idCard") Long idCard);
 
+
+	//@GetMapping("/findByExample")
+	//AccountCard findByAccoundCardForExample(AccountCard accountCard);
+
 	@PostMapping("/findByIdForExample")
 	AccountCard findByIdForExample(@RequestBody AccountCard accountCard);
 
 	
+
 }

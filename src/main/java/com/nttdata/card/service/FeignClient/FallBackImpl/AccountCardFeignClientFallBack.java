@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.nttdata.card.service.FeignClient.AccountCardFeignClient;
+import com.nttdata.card.service.entity.Card;
 import com.nttdata.card.service.model.AccountCard;
 
 import lombok.extern.log4j.Log4j2;
@@ -33,5 +34,14 @@ public class AccountCardFeignClientFallBack implements AccountCardFeignClient {
 		log.info("AccountCardFeignClientFallBack -> " + serviceUri+"/findByIdForExample/");
 		return null;
 	}
+
+
+
+	//@Override
+	//public AccountCard  findByAccoundCardForExample(AccountCard accountCard) {
+		// TODO Auto-generated method stub
+		//log.info("CreditAccountFeignClientFallBack -> " + serviceUri+"/findByExample :"+accountCard.toString()  );
+		//return null;
+	//}
 
 }

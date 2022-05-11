@@ -1,0 +1,1 @@
+package com.nttdata.card.service.consumer;
