@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.nttdata.card.service.FeignClient.AccountCardFeignClient;
-import com.nttdata.card.service.entity.Card;
 import com.nttdata.card.service.model.AccountCard;
 
 import lombok.extern.log4j.Log4j2;

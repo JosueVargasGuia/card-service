@@ -10,7 +10,6 @@ import com.nttdata.card.service.FeignClient.MovementsCardFeignClient;
 import com.nttdata.card.service.model.MovementsCard;
 
 import lombok.extern.log4j.Log4j2;
-import reactor.core.publisher.Flux;
 @Log4j2
 @Component
 public class MovementsCardFeignClientFallBack implements MovementsCardFeignClient {
